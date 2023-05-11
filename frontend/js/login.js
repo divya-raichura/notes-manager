@@ -7,12 +7,21 @@ $(document).ready(function () {
     '<input type="password" name="password" placeholder="Password">'
   );
   let submitButton = $('<button type="submit">Login</button>');
+  let newUser = $(
+    '<p>Don\'t have an account? <a href="/register">Register</a></p>'
+  );
   let loadingIndicator = $(
     '<div class="loading-spinner style="display:none">Loading...</div>'
   ).hide();
 
   // Add the form elements to the form
-  loginForm.append(emailInput, passwordInput, submitButton, loadingIndicator);
+  loginForm.append(
+    emailInput,
+    passwordInput,
+    submitButton,
+    newUser,
+    loadingIndicator
+  );
 
   const token = localStorage.getItem("token");
   if (token) {
@@ -54,7 +63,7 @@ $(document).ready(function () {
         localStorage.setItem("token", response.token);
 
         // User is logged in, redirect to dashboard or profile page
-        // window.location.href = "/notes";
+        window.location.href = "/notes";
       },
       error: function (xhr, status, error) {
         submitButton.show();
