@@ -1,0 +1,11 @@
+{
+  "name": "notesapp",
+  "version": "1.0.0",
+  "description": "add and view notes with auth system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Divya Raichura",
+  "license": "MIT"
+}
