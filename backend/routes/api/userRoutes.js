@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { me } = require("../controllers/userController");
+const { me } = require("../../controllers/userController");
 
 /**
  * route: /api/user/me

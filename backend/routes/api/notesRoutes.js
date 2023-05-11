@@ -6,7 +6,7 @@ const {
   postNotes,
   putNotes,
   getSingleNote,
-} = require("../controllers/notesController");
+} = require("../../controllers/notesController");
 
 /**
  * route: /api/notes/
@@ -14,6 +14,10 @@ const {
  */
 router.get("/", getNotes);
 router.post("/", postNotes);
+
+/**
+ * TODO
+ */
 
 /**
  * route: /api/notes/:id

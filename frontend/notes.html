@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notes Manager</title>
+    <!-- Include the local jQuery library -->
+    <script src="./js/jquery-3.6.4.min.js"></script>
+  </head>
+  <body>
+    <script>
+      $(document).ready(function () {
+        // fetch notes from server and display them
+        $.ajax({
+          url: "http://localhost:5000/api/notes",
+          type: "GET",
+          success: function (data) {
+            console.log(data);
+            // loop through the data and display it
+            // for (let i = 0; i < data.length; i++) {
+            //   $("#notes").append(
+            //     "<div class='note'><h3>" +
+            //       data[i].title +
+            //       "</h3><p>" +
+            //       data[i].content +
+            //       "</p></div>"
+            //   );
+            // }
+          },
+        });
+      });
+    </script>
+  </body>
+</html>
