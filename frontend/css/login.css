@@ -3,8 +3,17 @@ body {
   color: white;
 }
 
-h1 {
+h1,
+p {
   text-align: center;
+}
+
+/* Style the login form container */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Center the login form on the page */
@@ -16,8 +25,19 @@ form {
   height: 100%;
 }
 
+a {
+  color: dodgerblue;
+  margin-bottom: 10px;
+  /* center */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Style the form inputs and button */
 input[type="email"],
+input[type="text"],
 input[type="password"],
 button {
   padding: 10px;
@@ -28,7 +48,8 @@ button {
 }
 
 /* Style the submit button */
-button[type="submit"] {
+button[type="submit"],
+button {
   background-color: blue;
   color: white;
   cursor: pointer;

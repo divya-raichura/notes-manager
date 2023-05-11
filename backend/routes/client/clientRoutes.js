@@ -19,7 +19,7 @@ router.get("/login", (req, res) => {
 });
 
 router.get("/register", (req, res) => {
-  res.send("register  route");
+  res.sendFile(path.join(__dirname, "../../../frontend/register.html"));
 });
 
 module.exports = router;
