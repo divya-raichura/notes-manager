@@ -26,6 +26,7 @@ $(document).ready(function () {
   const token = localStorage.getItem("token");
   if (token) {
     window.location.href = "/login";
+    return;
   }
 
   $("body").append(heading, registerForm);
@@ -49,6 +50,7 @@ $(document).ready(function () {
 
         // User is logged in, redirect to dashboard or profile page
         window.location.href = "/notes";
+        return;
       },
       error: function (xhr, status, error) {
         submitButton.show();

@@ -36,6 +36,7 @@ $(document).ready(function () {
     logoutButton.click(function () {
       localStorage.removeItem("token");
       window.location.href = "/login";
+      return;
     });
 
     loggedInContainer.append(alreadyLoggedIn, notesLink, logoutButton);
@@ -64,6 +65,7 @@ $(document).ready(function () {
 
         // User is logged in, redirect to dashboard or profile page
         window.location.href = "/notes";
+        return;
       },
       error: function (xhr, status, error) {
         submitButton.show();

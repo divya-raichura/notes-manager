@@ -5,6 +5,7 @@ $(document).ready(function () {
   // if the token is not present, redirect to login page
   if (!token) {
     window.location.href = "/login";
+    return;
   }
 
   // if the token is present, display the notes page
@@ -19,6 +20,7 @@ $(document).ready(function () {
   logoutButton.click(function () {
     localStorage.removeItem("token");
     window.location.href = "/login";
+    return;
   });
 
   navbar.append(logoutButton);

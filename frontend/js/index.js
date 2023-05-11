@@ -7,6 +7,7 @@ $(document).ready(function () {
 
   if (!token) {
     window.location.href = "/login";
+    return;
   }
 
   $.ajax({
@@ -35,6 +36,7 @@ $(document).ready(function () {
     error: function (error) {
       // redirect to login if there is an error
       window.location.href = "/login";
+      return;
     },
   });
 });
