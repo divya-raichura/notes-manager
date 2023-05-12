@@ -1,7 +1,7 @@
 const db = require("../db/db");
 
 /**
- * @desc Get all tasks
+ * @desc Get all notes
  * @route GET /api/notes
  * @access Private
  */
@@ -14,7 +14,7 @@ const getNotes = async (req, res) => {
 };
 
 /**
- * @desc Set task
+ * @desc Set note
  * @route POST /api/notes
  * @access Private
  */
@@ -47,19 +47,68 @@ const postNotes = async (req, res) => {
 };
 
 /**
- * TODO
+ * @desc Update note
+ * @route PUT /api/notes/:id
+ * @access Private
  */
-
-const deleteNotes = async (req, res) => {
-  res.send("deleteNotes");
-};
-
 const putNotes = async (req, res) => {
-  res.send("putNotes");
+  const { title, content } = req.body;
+
+  const { rows } = await db.query(
+    "UPDATE notes SET title = $1, content = $2 WHERE id = $3 RETURNING *",
+    [title, content, req.params.id]
+  );
+
+  if (rows.length === 0) {
+    res.status(404);
+    throw new Error("Note not found");
+  }
+
+  res.status(200).json({ updatedNote: rows[0] });
 };
 
+/**
+ * @desc Get single note
+ * @route GET /api/notes/:id
+ * @access Private
+ */
 const getSingleNote = async (req, res) => {
-  res.send("getSingleNote");
+  const noteId = req.params.id;
+  const userId = req.user.userId;
+
+  const { rows } = await db.query(
+    "SELECT * FROM notes WHERE id = $1 AND user_id = $2",
+    [noteId, userId]
+  );
+
+  if (rows.length === 0) {
+    res.status(404);
+    throw new Error("Note not found");
+  }
+
+  res.status(200).json({ note: rows[0] });
+};
+
+/**
+ * @desc Delete note
+ * @route DELETE /api/notes/:id
+ * @access Private
+ */
+const deleteNotes = async (req, res) => {
+  const noteId = req.params.id;
+  const userId = req.user.userId;
+
+  const { rows } = await db.query(
+    "DELETE FROM notes WHERE id = $1 AND user_id = $2 RETURNING *",
+    [noteId, userId]
+  );
+
+  if (rows.length === 0) {
+    res.status(404);
+    throw new Error("Note not found");
+  }
+
+  res.status(200).json({ deletedNote: rows[0] });
 };
 
 module.exports = {

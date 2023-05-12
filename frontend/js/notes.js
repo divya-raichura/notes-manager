@@ -138,8 +138,75 @@ $(document).ready(function () {
             "<span>" +
             formattedDate +
             "</span>" +
+            "<button class='edit-note-button' data-id='" +
+            note.id +
+            "'>Edit</button>" +
+            "<button class='delete-note-button' data-id='" +
+            note.id +
+            "'>Delete</button>" +
             "</div>"
         );
+      });
+
+      // handle delete note button clicks
+      $(".delete-note-button").click(function () {
+        const noteId = $(this).attr("data-id");
+
+        $.ajax({
+          url: "/api/notes/" + noteId,
+          type: "DELETE",
+          headers: {
+            Authorization: "Bearer " + token, // include the token in the request headers
+          },
+          beforeSend: function () {
+            // Show loading state
+            $("#notes-container").append("<p>Deleting...</p>");
+          },
+          success: function (data) {
+            // Clear loading state
+            $("#notes-container").empty();
+
+            window.location.href = "/notes";
+          },
+          error: function (xhr, status, error) {
+            // handle error responses
+            console.error(error);
+          },
+        });
+      });
+
+      // handle edit note button clicks
+      $(".edit-note-button").click(function () {
+        const noteId = $(this).attr("data-id");
+
+        const title = prompt("Enter a new title");
+        const content = prompt("Enter new content");
+
+        $.ajax({
+          url: "/api/notes/" + noteId,
+          type: "PUT",
+          headers: {
+            Authorization: "Bearer " + token, // include the token in the request headers
+          },
+          data: {
+            title: title,
+            content: content,
+          },
+          beforeSend: function () {
+            // Show loading state
+            $("#notes-container").append("<p>Updating...</p>");
+          },
+          success: function (data) {
+            // Clear loading state
+            $("#notes-container").empty();
+
+            window.location.href = "/notes";
+          },
+          error: function (xhr, status, error) {
+            // handle error responses
+            console.error(error);
+          },
+        });
       });
     },
     error: function (xhr, status, error) {
