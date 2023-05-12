@@ -53,10 +53,11 @@ const postNotes = async (req, res) => {
  */
 const putNotes = async (req, res) => {
   const { title, content } = req.body;
+  const userID = req.user?.userId;
 
   const { rows } = await db.query(
-    "UPDATE notes SET title = $1, content = $2 WHERE id = $3 RETURNING *",
-    [title, content, req.params.id]
+    "UPDATE notes SET title = $1, content = $2 WHERE id = $3 AND user_id = $4 RETURNING *",
+    [title, content, req.params.id, userID]
   );
 
   if (rows.length === 0) {

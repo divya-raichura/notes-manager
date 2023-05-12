@@ -49,8 +49,8 @@ $(document).ready(function () {
   $("body").append("<hr/><h2>Notes</h2>");
   $("body").append("<div id='notes-container'  class='grid'></div>");
 
-  // handle form submission
-  addNoteForm.submit(function (event) {
+  // submit form function
+  function formSubmitHandler(event) {
     event.preventDefault();
 
     const title = titleInput.val();
@@ -73,7 +73,6 @@ $(document).ready(function () {
       },
       success: function (data) {
         // add the new note to the notes container
-        console.log("add note data: ", data);
         const { newNote } = data;
         const createdDate = new Date(newNote.created_at);
         const formattedDate = createdDate.toLocaleString();
@@ -104,7 +103,10 @@ $(document).ready(function () {
         console.error(error);
       },
     });
-  });
+  }
+
+  // handle form submission
+  addNoteForm.submit(formSubmitHandler);
 
   // fetch notes from server and display them
   $.ajax({
@@ -121,8 +123,6 @@ $(document).ready(function () {
       // Clear loading state
       $("#notes-container").empty();
       const { notes } = data;
-
-      console.log(notes);
 
       notes.forEach(function (note) {
         const createdDate = new Date(note.created_at);
@@ -178,29 +178,55 @@ $(document).ready(function () {
       // handle edit note button clicks
       $(".edit-note-button").click(function () {
         const noteId = $(this).attr("data-id");
-
-        const title = prompt("Enter a new title");
-        const content = prompt("Enter new content");
-
         $.ajax({
           url: "/api/notes/" + noteId,
-          type: "PUT",
+          type: "GET",
           headers: {
-            Authorization: "Bearer " + token, // include the token in the request headers
-          },
-          data: {
-            title: title,
-            content: content,
-          },
-          beforeSend: function () {
-            // Show loading state
-            $("#notes-container").append("<p>Updating...</p>");
+            Authorization: "Bearer " + token,
           },
           success: function (data) {
-            // Clear loading state
-            $("#notes-container").empty();
+            const { note } = data;
 
-            window.location.href = "/notes";
+            // populate the form with the note data
+            titleInput.val(note.title);
+            contentInput.val(note.content);
+
+            // change the form submit handler to a function that updates the note
+            addNoteForm.off("submit").submit(function (event) {
+              event.preventDefault();
+
+              const newTitle = titleInput.val();
+              const newContent = contentInput.val();
+
+              $.ajax({
+                url: "/api/notes/" + noteId,
+                type: "PUT",
+                headers: {
+                  Authorization: "Bearer " + token,
+                },
+                data: {
+                  title: newTitle,
+                  content: newContent,
+                },
+                beforeSend: function () {
+                  // Show loading state
+                  addNoteLoading.show();
+                  submitButton.hide();
+                },
+                success: function (data) {
+                  // Clear loading state
+                  addNoteLoading.hide();
+                  submitButton.show();
+
+                  // redirect to the notes page
+                  window.location.href = "/notes";
+                },
+                error: function (xhr, status, error) {
+                  // handle error responses
+                  console.error(error);
+                },
+              });
+            });
           },
           error: function (xhr, status, error) {
             // handle error responses
